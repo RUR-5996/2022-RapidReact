@@ -16,11 +16,11 @@ public class RobotMap {
     public static final XboxController controller = new XboxController(0);
 
     // Left
-    static final WPI_TalonSRX frontLeft = new WPI_TalonSRX(0);
+    static final WPI_TalonSRX frontLeft = new WPI_TalonSRX(2);
     static final WPI_TalonSRX rearLeft = new WPI_TalonSRX(1);
     // Right
-    static final WPI_TalonSRX frontRight = new WPI_TalonSRX(2);
-    static final WPI_TalonSRX rearRight = new WPI_TalonSRX(3);
+    static final WPI_TalonSRX frontRight = new WPI_TalonSRX(3);
+    static final WPI_TalonSRX rearRight = new WPI_TalonSRX(4);
 
     // Drive
     static final MotorControllerGroup leftControllerGroup = new MotorControllerGroup(rearLeft, frontLeft);

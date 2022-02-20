@@ -6,11 +6,7 @@ import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class NavX {
-    static AHRS navX;
-
-    public NavX() {
-        navX = new AHRS(SPI.Port.kMXP);
-    }
+    static AHRS navX = new AHRS(SPI.Port.kMXP);
 
     public static void periodic() {
         xAcceleration();
