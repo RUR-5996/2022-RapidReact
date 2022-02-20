@@ -5,9 +5,9 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
+import frc.robot.sensors.NavX;
 
 public class Robot extends TimedRobot {
-
   @Override
   public void robotInit() {
   }
