@@ -11,6 +11,6 @@ public class Variables {
     public static int sensorProximity = 2047;
 
     public static final double VOLTS_TO_DISTANCE = 0.976;
-    public static final double HIGH_SHOOTER_CONSTANT = 0.75;
-    public static final double LOW_SHOOTER_CONSTANT = 0.25;
+    public static final double HIGH_SHOOTER_CONSTANT = 0.9;
+    public static final double LOW_SHOOTER_CONSTANT = 0.5;
 }
