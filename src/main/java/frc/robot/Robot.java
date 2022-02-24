@@ -10,6 +10,7 @@ import frc.robot.sensors.NavX;
 public class Robot extends TimedRobot {
   @Override
   public void robotInit() {
+    RobotMap.encoder.setDistancePerPulse(1./256.);
   }
 
   @Override
@@ -24,6 +25,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void autonomousPeriodic() {
+    Autonomous.periodic();
   }
 
   @Override

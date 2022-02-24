@@ -7,6 +7,7 @@ import com.revrobotics.ColorSensorV3;
 
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.I2C.Port;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.XboxController;
@@ -44,4 +45,10 @@ public class RobotMap {
 
     public static final AnalogInput ultrasonicLeft = new AnalogInput(0);
     public static final AnalogInput ultrasonicRight = new AnalogInput(1);
+
+    // Encoder
+    public static final Encoder encoder = new Encoder(0, 1);
+
+    
+
 }

@@ -10,6 +10,10 @@ public class Constants {
     public static boolean buttonState = false;
     public static int sensorProximity = 2047;
 
+    //Encoder
+    public static double leftDriveTicks = 0;
+    public static double rightDriveTicks = 0;
+
     // Ultrasonic
     public static final double VOLTS_TO_DISTANCE = 0.976;
 
