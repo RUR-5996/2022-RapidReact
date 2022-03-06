@@ -1,6 +1,12 @@
 package frc.robot;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
 public class Sensors {
+
+    static double encoderTickRight = 0;
+    static double encoderTickLeft = 0;
+
     public static void periodic() {
         getUltrasonicVoltage();
         getUltrasonicDistance();
@@ -22,5 +28,12 @@ public class Sensors {
 
     static void getColor() {
         RobotMap.ballSensor.getProximity();
+    }
+
+    static void getTicks() {
+        encoderTickRight = RobotMap.rearLeft.getSelectedSensorPosition(0);
+        encoderTickLeft = RobotMap.frontRight.getSelectedSensorPosition(0);
+        SmartDashboard.putNumber("leftticks", encoderTickLeft);
+        SmartDashboard.putNumber("rightticks", encoderTickRight);
     }
 }
