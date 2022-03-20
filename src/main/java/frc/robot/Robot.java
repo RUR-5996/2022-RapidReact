@@ -10,11 +10,7 @@ import frc.robot.sensors.NavX;
 public class Robot extends TimedRobot {
   @Override
   public void robotInit() {
-<<<<<<< Updated upstream
-    RobotMap.encoder.setDistancePerPulse(1./256.);
-=======
     RobotMap.climberInit();
->>>>>>> Stashed changes
   }
 
   @Override
@@ -29,7 +25,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void autonomousPeriodic() {
-    Autonomous.periodic();
+    //Autonomous.periodic();
   }
 
   @Override
@@ -41,6 +37,7 @@ public class Robot extends TimedRobot {
     Drive.periodic();
     Lednice.periodic();
     Climber.periodic();
+    Lednicev2.periodic();
   }
 
   @Override

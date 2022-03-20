@@ -6,13 +6,6 @@ import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 import com.kauailabs.navx.frc.AHRS;
 import com.revrobotics.ColorSensorV3;
 
-<<<<<<< Updated upstream
-import edu.wpi.first.wpilibj.AnalogInput;
-import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj.Encoder;
-import edu.wpi.first.wpilibj.I2C.Port;
-=======
->>>>>>> Stashed changes
 import edu.wpi.first.wpilibj.SPI;
 
 import edu.wpi.first.wpilibj.AnalogInput; 
@@ -75,18 +68,10 @@ public class RobotMap {
     public static final AnalogInput ultrasonicLeft = new AnalogInput(0);
     public static final AnalogInput ultrasonicRight = new AnalogInput(1);
 
-<<<<<<< Updated upstream
-    // Encoder
-    public static final Encoder encoder = new Encoder(0, 1);
-
-    
-
-=======
     public static void climberInit() {
         climberLarge.setNeutralMode(NeutralMode.Brake);
         climberLeft.setNeutralMode(NeutralMode.Brake);
         climberRight.setNeutralMode(NeutralMode.Brake);
         climberRotate.setNeutralMode(NeutralMode.Brake);
     }
->>>>>>> Stashed changes
 }
