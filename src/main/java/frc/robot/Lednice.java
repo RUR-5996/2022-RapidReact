@@ -1,6 +1,7 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.Timer;
+import frc.robot.sensors.BallPresence;
 
 public class Lednice {
     enum Task {
@@ -16,12 +17,10 @@ public class Lednice {
         HIGH
     }
 
-    static Timer buttonTimer = new Timer();
+    static Timer intakeTimer = new Timer();
 
     static Task task = Task.NONE;
     static Shooting shooting = Shooting.STOP;
-
-    static boolean hasButtonStopped = false;
 
     public static void periodic() {
         intake();
@@ -40,9 +39,11 @@ public class Lednice {
     public static void intake() {
         double intakeSpeed = 0;
 
+        boolean hasXButtonBeenPressed = RobotMap.controller.getXButtonPressed();
+
         toggleTask(Task.INTAKE, RobotMap.controller.getRightBumperPressed());
         toggleTask(Task.REVERSE, RobotMap.controller.getYButtonPressed());
-        toggleTask(Task.PREPARE_TO_SHOOT, RobotMap.controller.getXButtonPressed());
+        toggleTask(Task.PREPARE_TO_SHOOT, hasXButtonBeenPressed);
 
         switch (task) {
             case NONE:
@@ -55,39 +56,31 @@ public class Lednice {
                 intakeSpeed = -Constants.INTAKE_CONSTANT;
                 break;
             case PREPARE_TO_SHOOT:
-                intakeSpeed = 0;
+                if (hasXButtonBeenPressed)
+                    intakeTimer.reset();
+
+                if (BallPresence.isTopBallPresent())
+                    // If there is ball up top, move it down
+                    intakeSpeed = -Constants.INTAKE_CONSTANT;
+
                 break;
         }
 
         RobotMap.intake.set(intakeSpeed);
     }
 
+    private static void toggleShooting(Shooting shootingToToggle, boolean condition) {
+        if (shooting == shootingToToggle)
+            shooting = Shooting.STOP;
+        else
+            shooting = shootingToToggle;
+    }
+
     // A – low shooting toggle
     // B – high shooting toggle
     public static void shooter() {
-        // Check if A-button is pressed
-        if (RobotMap.controller.getAButtonPressed()) {
-            switch (shooting) {
-                // If the shooter is already shooting low, stop
-                case LOW:
-                    shooting = Shooting.STOP;
-                    break;
-                // Otherwise, switch to low
-                default:
-                    shooting = Shooting.LOW;
-            }
-        }
-
-        // Same principle as above
-        if (RobotMap.controller.getBButtonPressed()) {
-            switch (shooting) {
-                case HIGH:
-                    shooting = Shooting.STOP;
-                    break;
-                default:
-                    shooting = Shooting.HIGH;
-            }
-        }
+        toggleShooting(Shooting.LOW, RobotMap.controller.getAButtonPressed());
+        toggleShooting(Shooting.HIGH, RobotMap.controller.getBButtonPressed());
 
         // Set the speeds
         switch (shooting) {
