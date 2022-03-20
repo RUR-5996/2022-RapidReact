@@ -1,14 +1,13 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.Timer;
-import frc.robot.sensors.BallPresence;
+import frc.robot.sensors.BallCounter;
 
 public class Lednice {
     enum Task {
         NONE,
         INTAKE,
         REVERSE,
-        PREPARE_TO_SHOOT
     }
 
     enum Shooting {
@@ -23,8 +22,10 @@ public class Lednice {
     static Shooting shooting = Shooting.STOP;
 
     public static void periodic() {
-        intake();
         shooter();
+
+        if (shooting == Shooting.STOP)
+            intake();
     }
 
     private static void toggleTask(Task taskToToggle, boolean condition) {
@@ -39,11 +40,11 @@ public class Lednice {
     public static void intake() {
         double intakeSpeed = 0;
 
-        boolean hasXButtonBeenPressed = RobotMap.controller.getXButtonPressed();
-
         toggleTask(Task.INTAKE, RobotMap.controller.getRightBumperPressed());
         toggleTask(Task.REVERSE, RobotMap.controller.getYButtonPressed());
-        toggleTask(Task.PREPARE_TO_SHOOT, hasXButtonBeenPressed);
+
+        if (BallCounter.ballCount() == 2)
+            task = Task.NONE;
 
         switch (task) {
             case NONE:
@@ -55,18 +56,10 @@ public class Lednice {
             case REVERSE:
                 intakeSpeed = -Constants.INTAKE_CONSTANT;
                 break;
-            case PREPARE_TO_SHOOT:
-                if (hasXButtonBeenPressed)
-                    intakeTimer.reset();
-
-                if (BallPresence.isTopBallPresent())
-                    // If there is ball up top, move it down
-                    intakeSpeed = -Constants.INTAKE_CONSTANT;
-
-                break;
         }
 
         RobotMap.intake.set(intakeSpeed);
+        RobotMap.shooterBottom.set(BallCounter.isTopBallPresent() ? 0 : intakeSpeed);
     }
 
     private static void toggleShooting(Shooting shootingToToggle, boolean condition) {

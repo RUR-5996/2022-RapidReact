@@ -1,72 +1,58 @@
 package frc.robot;
 
-import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-
 public class Climber {
+    enum Direction {
+        NONE,
+        UP,
+        DOWN
+    }
 
-    static boolean stopped = false;
-    static Timer buttonTimer = new Timer();
-    static int type = 0;
+    static Direction clawsMoveable = Direction.NONE;
+    static Direction clawsStatic = Direction.NONE;
+
+    static final double CLIMBER_CONSTANT = 0.7;
 
     public static void periodic() {
-        changeType();
-        if(stopped) {
-            stopAll();
-        } else if(type == 1) {
-            pullStatic();
-        } else if(type == 2) {
-            pullMoving();
-        } else if(type == 3) {
-            holyShitTheBotIsRotating();
-        } else {
-            stopAll();
+        if (RobotMap.moveableUp.get())
+            clawsMoveable = Direction.UP;
+        else if (RobotMap.moveableDown.get())
+            clawsMoveable = Direction.DOWN;
+        else
+            clawsMoveable = Direction.NONE;
+
+        if (RobotMap.staticUp.get())
+            clawsStatic = Direction.UP;
+        else if (RobotMap.staticDown.get())
+            clawsStatic = Direction.DOWN;
+        else
+            clawsStatic = Direction.NONE;
+
+        switch (clawsMoveable) {
+            case NONE:
+                RobotMap.climberLeft.set(0);
+                RobotMap.climberRight.set(0);
+            case UP:
+                RobotMap.climberLeft.set(CLIMBER_CONSTANT);
+                RobotMap.climberRight.set(CLIMBER_CONSTANT);
+            case DOWN:
+                RobotMap.climberLeft.set(-CLIMBER_CONSTANT);
+                RobotMap.climberRight.set(-CLIMBER_CONSTANT);
         }
 
-    }
-
-    public static void pullMoving() {
-        RobotMap.climberLeft.set(RobotMap.testController.getY());
-        RobotMap.climberRight.set(RobotMap.testController.getY());
-        RobotMap.climberLarge.set(0);
-        RobotMap.climberRotate.set(0);
-    }
-
-    public static void pullStatic() {
-        RobotMap.climberLarge.set(RobotMap.testController.getY());
-        RobotMap.climberLeft.set(0);
-        RobotMap.climberRight.set(0);
-        RobotMap.climberRotate.set(0);
-    }
-
-    public static void holyShitTheBotIsRotating() {
-        RobotMap.climberRotate.set(RobotMap.testController.getY());
-        RobotMap.climberLeft.set(0);
-        RobotMap.climberRight.set(0);
-        RobotMap.climberLarge.set(0);
-    }
-
-    public static void stopAll() {
-        RobotMap.climberLarge.set(0);
-        RobotMap.climberLeft.set(0);
-        RobotMap.climberRight.set(0);
-        RobotMap.climberRotate.set(0);
-    }
-
-    public static void changeType() {
-        if(RobotMap.two.get()&&type!=3&&buttonTimer.get()>0.2) {
-            type++;
-        } else if(RobotMap.two.get()&&type==3&&buttonTimer.get()>0.2) {
-            type = 0;
-        } else if(RobotMap.three.get()&&type!=0&&buttonTimer.get()>0.2) {
-            type--;
-        } else if(RobotMap.three.get()&&type==0&&buttonTimer.get()>0.2) {
-            type = 3;
+        switch (clawsStatic) {
+            case NONE:
+                RobotMap.climberLarge.set(0);
+            case UP:
+                RobotMap.climberLarge.set(CLIMBER_CONSTANT);
+            case DOWN:
+                RobotMap.climberLarge.set(-CLIMBER_CONSTANT);
         }
-        SmartDashboard.putNumber("climbingType", type);
-        if(RobotMap.one.get()&&buttonTimer.get()>0.2) {
-            stopped = true;
-        }
+
+        if (RobotMap.rotateBackward.get())
+            RobotMap.climberRotate.set(CLIMBER_CONSTANT);
+        else if (RobotMap.rotateBackward.get())
+            RobotMap.climberRotate.set(CLIMBER_CONSTANT);
+        else
+            RobotMap.climberRotate.set(0);
     }
-    
 }

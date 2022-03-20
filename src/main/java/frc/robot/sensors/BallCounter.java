@@ -6,7 +6,7 @@ import frc.robot.*;
 public class BallCounter {
     public static int ballCount() {
         boolean top = isTopBallPresent(), bottom = isBottomBallPresent();
-        
+
         if (top && bottom)
             return 2;
         else if (top || bottom)
@@ -15,12 +15,12 @@ public class BallCounter {
             return 0;
     }
 
-    static boolean isTopBallPresent() {
+    public static boolean isTopBallPresent() {
         SmartDashboard.putNumber("Color sensor proximity", RobotMap.colorSensor.getProximity());
         return RobotMap.colorSensor.getProximity() > 1800;
     }
 
-    static boolean isBottomBallPresent() {
+    public static boolean isBottomBallPresent() {
         return RobotMap.ballButton.get();
     }
 }

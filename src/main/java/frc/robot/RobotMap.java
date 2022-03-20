@@ -8,8 +8,7 @@ import com.revrobotics.ColorSensorV3;
 
 import edu.wpi.first.wpilibj.SPI;
 
-import edu.wpi.first.wpilibj.AnalogInput; 
-import edu.wpi.first.wpilibj.Compressor;
+import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Joystick;
@@ -23,11 +22,16 @@ import edu.wpi.first.wpilibj2.command.button.Button;
 public class RobotMap {
     // Controller
     public static final XboxController controller = new XboxController(0);
-    public static final Joystick testController = new Joystick(1);
+    public static final Joystick joystick = new Joystick(1);
 
-    public static final Button one = new JoystickButton(testController, 1);
-    public static final Button two = new JoystickButton(testController, 2);
-    public static final Button three = new JoystickButton(testController, 3);
+    public static final Button moveableUp = new JoystickButton(joystick, 6);
+    public static final Button moveableDown = new JoystickButton(joystick, 7);
+
+    public static final Button staticUp = new JoystickButton(joystick, 11);
+    public static final Button staticDown = new JoystickButton(joystick, 10);
+
+    public static final Button rotateForward = new JoystickButton(joystick, 3);
+    public static final Button rotateBackward = new JoystickButton(joystick, 2);
 
     // Left
     static final WPI_TalonSRX frontLeft = new WPI_TalonSRX(2);
@@ -42,7 +46,7 @@ public class RobotMap {
 
     public static final DifferentialDrive drive = new DifferentialDrive(leftControllerGroup, rightControllerGroup);
 
-    //climber
+    // Climber
     static final WPI_VictorSPX climberLarge = new WPI_VictorSPX(7);
     static final WPI_VictorSPX climberLeft = new WPI_VictorSPX(6);
     static final WPI_VictorSPX climberRight = new WPI_VictorSPX(5);
@@ -54,8 +58,8 @@ public class RobotMap {
     public static final WPI_VictorSPX shooterBottom = new WPI_VictorSPX(11);
     public static final WPI_VictorSPX shooterTop = new WPI_VictorSPX(10);
 
-    //Pneumatics
-    //public static final Compressor compressor = new Compressor(ModuleType.kCTRE);
+    // Pneumatics
+    // public static final Compressor compressor = new Compressor(ModuleType.kCTRE);
     public static final DoubleSolenoid leftIntake = new DoubleSolenoid(12, PneumaticsModuleType.CTREPCM, 1, 3);
     public static final DoubleSolenoid rightIntake = new DoubleSolenoid(12, PneumaticsModuleType.CTREPCM, 0, 2);
 
