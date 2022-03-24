@@ -31,27 +31,33 @@ public class Climber {
             case NONE:
                 RobotMap.climberLeft.set(0);
                 RobotMap.climberRight.set(0);
+                break;
             case UP:
                 RobotMap.climberLeft.set(CLIMBER_CONSTANT);
                 RobotMap.climberRight.set(CLIMBER_CONSTANT);
+                break;
             case DOWN:
                 RobotMap.climberLeft.set(-CLIMBER_CONSTANT);
                 RobotMap.climberRight.set(-CLIMBER_CONSTANT);
+                break;
         }
 
         switch (clawsStatic) {
             case NONE:
                 RobotMap.climberLarge.set(0);
+                break;
             case UP:
                 RobotMap.climberLarge.set(CLIMBER_CONSTANT);
+                break;
             case DOWN:
                 RobotMap.climberLarge.set(-CLIMBER_CONSTANT);
+                break;
         }
 
         if (RobotMap.rotateBackward.get())
             RobotMap.climberRotate.set(CLIMBER_CONSTANT);
-        else if (RobotMap.rotateBackward.get())
-            RobotMap.climberRotate.set(CLIMBER_CONSTANT);
+        else if (RobotMap.rotateForward.get())
+            RobotMap.climberRotate.set(-CLIMBER_CONSTANT);
         else
             RobotMap.climberRotate.set(0);
     }
