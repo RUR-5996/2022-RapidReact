@@ -9,11 +9,6 @@ public class Climber {
         DOWN
     }
 
-    enum Claws {
-        OPEN,
-        CLOSE
-    }
-
     static Direction clawsMoveable = Direction.NONE;
     static Direction clawsStatic = Direction.NONE;
     static boolean clawsOpen = true;

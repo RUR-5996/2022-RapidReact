@@ -8,51 +8,51 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import frc.robot.sensors.NavX;
 
 public class Robot extends TimedRobot {
-  @Override
-  public void robotInit() {
-    RobotMap.climberInit();
-  }
+    @Override
+    public void robotInit() {
+        RobotMap.climberInit();
+    }
 
-  @Override
-  public void robotPeriodic() {
-    NavX.periodic();
-    Sensors.periodic();
-  }
+    @Override
+    public void robotPeriodic() {
+        NavX.periodic();
+        Sensors.periodic();
+    }
 
-  @Override
-  public void autonomousInit() {
-  }
+    @Override
+    public void autonomousInit() {
+    }
 
-  @Override
-  public void autonomousPeriodic() {
-    // Autonomous.periodic();
-  }
+    @Override
+    public void autonomousPeriodic() {
+        // Autonomous.periodic();
+    }
 
-  @Override
-  public void teleopInit() {
-  }
+    @Override
+    public void teleopInit() {
+    }
 
-  @Override
-  public void teleopPeriodic() {
-    Drive.periodic();
-    Lednice.periodic();
-    Lednicev2.periodic();
-    Climber.periodic();
-  }
+    @Override
+    public void teleopPeriodic() {
+        Drive.periodic();
+        Lednice.periodic();
+        Lednicev2.periodic();
+        Climber.periodic();
+    }
 
-  @Override
-  public void disabledInit() {
-  }
+    @Override
+    public void disabledInit() {
+    }
 
-  @Override
-  public void disabledPeriodic() {
-  }
+    @Override
+    public void disabledPeriodic() {
+    }
 
-  @Override
-  public void testInit() {
-  }
+    @Override
+    public void testInit() {
+    }
 
-  @Override
-  public void testPeriodic() {
-  }
+    @Override
+    public void testPeriodic() {
+    }
 }

@@ -6,18 +6,17 @@ import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 import com.kauailabs.navx.frc.AHRS;
 import com.revrobotics.ColorSensorV3;
 
-import edu.wpi.first.wpilibj.SPI;
-
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
+import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
-import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Button;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 public class RobotMap {
     // Controller
@@ -48,7 +47,6 @@ public class RobotMap {
 
     public static final DifferentialDrive drive = new DifferentialDrive(leftControllerGroup, rightControllerGroup);
 
-    
     // Climber
     static final WPI_VictorSPX climberLarge = new WPI_VictorSPX(7);
     static final WPI_VictorSPX climberLeft = new WPI_VictorSPX(6);
@@ -74,6 +72,7 @@ public class RobotMap {
 
     public static final DigitalInput ballButton = new DigitalInput(0);
     public static final ColorSensorV3 colorSensor = new ColorSensorV3(edu.wpi.first.wpilibj.I2C.Port.kOnboard);
+    public static final AnalogInput ultrasonic = new AnalogInput(0);
 
     public static void climberInit() {
         climberLarge.setNeutralMode(NeutralMode.Brake);
