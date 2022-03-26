@@ -48,6 +48,7 @@ public class RobotMap {
 
     public static final DifferentialDrive drive = new DifferentialDrive(leftControllerGroup, rightControllerGroup);
 
+    
     // Climber
     static final WPI_VictorSPX climberLarge = new WPI_VictorSPX(7);
     static final WPI_VictorSPX climberLeft = new WPI_VictorSPX(6);

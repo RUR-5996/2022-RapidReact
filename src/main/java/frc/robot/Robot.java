@@ -36,6 +36,7 @@ public class Robot extends TimedRobot {
   public void teleopPeriodic() {
     Drive.periodic();
     Lednice.periodic();
+    Lednicev2.periodic();
     Climber.periodic();
   }
 

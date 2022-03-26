@@ -37,9 +37,13 @@ public class Climber {
         else
             clawsStatic = Direction.NONE;
 
-        if (RobotMap.clawsToggle.get() != lastPressed) {
-            lastPressed = RobotMap.clawsToggle.get();
-            clawsOpen = !clawsOpen;
+        if (RobotMap.clawsToggle.get()) {
+            if (!lastPressed) {
+                lastPressed = true;
+                clawsOpen = !clawsOpen;
+            }
+        } else {
+            lastPressed = false;
         }
 
         switch (clawsMoveable) {
