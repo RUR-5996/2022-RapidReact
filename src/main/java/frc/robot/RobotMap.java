@@ -30,8 +30,10 @@ public class RobotMap {
     public static final Button staticUp = new JoystickButton(joystick, 11);
     public static final Button staticDown = new JoystickButton(joystick, 10);
 
-    public static final Button rotateForward = new JoystickButton(joystick, 3);
-    public static final Button rotateBackward = new JoystickButton(joystick, 2);
+    public static final Button rotateForward = new JoystickButton(joystick, 4);
+    public static final Button rotateBackward = new JoystickButton(joystick, 5);
+
+    public static final Button clawsToggle = new JoystickButton(joystick, 2);
 
     // Left
     static final WPI_TalonSRX frontLeft = new WPI_TalonSRX(2);
@@ -68,9 +70,6 @@ public class RobotMap {
 
     public static final DigitalInput ballButton = new DigitalInput(0);
     public static final ColorSensorV3 colorSensor = new ColorSensorV3(edu.wpi.first.wpilibj.I2C.Port.kOnboard);
-
-    public static final AnalogInput ultrasonicLeft = new AnalogInput(0);
-    public static final AnalogInput ultrasonicRight = new AnalogInput(1);
 
     public static void climberInit() {
         climberLarge.setNeutralMode(NeutralMode.Brake);

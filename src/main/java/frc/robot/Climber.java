@@ -7,8 +7,16 @@ public class Climber {
         DOWN
     }
 
+    enum Claws {
+        OPEN,
+        CLOSE
+    }
+
     static Direction clawsMoveable = Direction.NONE;
     static Direction clawsStatic = Direction.NONE;
+    static boolean clawsOpen = true;
+
+    static boolean lastPressed = false;
 
     static final double CLIMBER_CONSTANT = 0.7;
 
@@ -26,6 +34,11 @@ public class Climber {
             clawsStatic = Direction.DOWN;
         else
             clawsStatic = Direction.NONE;
+
+        if (RobotMap.clawsToggle.get() != lastPressed) {
+            lastPressed = RobotMap.clawsToggle.get();
+            clawsOpen = !clawsOpen;
+        }
 
         switch (clawsMoveable) {
             case NONE:
