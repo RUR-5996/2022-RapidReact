@@ -65,6 +65,9 @@ public class RobotMap {
     public static final DoubleSolenoid leftIntake = new DoubleSolenoid(12, PneumaticsModuleType.CTREPCM, 1, 3);
     public static final DoubleSolenoid rightIntake = new DoubleSolenoid(12, PneumaticsModuleType.CTREPCM, 0, 2);
 
+    public static final DoubleSolenoid rearHook = new DoubleSolenoid(12, PneumaticsModuleType.CTREPCM, 6, 4);
+    public static final DoubleSolenoid frontHook = new DoubleSolenoid(12, PneumaticsModuleType.CTREPCM, 7, 5);
+
     // Sensors
     public static final AHRS navX = new AHRS(SPI.Port.kMXP);
 

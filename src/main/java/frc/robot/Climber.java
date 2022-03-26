@@ -1,5 +1,7 @@
 package frc.robot;
 
+import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
+
 public class Climber {
     enum Direction {
         NONE,
@@ -73,5 +75,13 @@ public class Climber {
             RobotMap.climberRotate.set(-CLIMBER_CONSTANT);
         else
             RobotMap.climberRotate.set(0);
+
+        if (clawsOpen) {
+            RobotMap.frontHook.set(Value.kForward);
+            RobotMap.rearHook.set(Value.kForward);
+        } else {
+            RobotMap.frontHook.set(Value.kReverse);
+            RobotMap.rearHook.set(Value.kReverse);
+        }
     }
 }
