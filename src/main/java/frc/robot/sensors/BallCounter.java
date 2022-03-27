@@ -16,8 +16,9 @@ public class BallCounter {
     }
 
     public static boolean isTopBallPresent() {
-        SmartDashboard.putNumber("Color sensor proximity", RobotMap.colorSensor.getProximity());
-        return RobotMap.colorSensor.getProximity() > 1800;
+        int proximity = RobotMap.colorSensor.getProximity();
+        SmartDashboard.putNumber("Color sensor proximity", proximity);
+        return proximity > 1800;
     }
 
     public static boolean isBottomBallPresent() {

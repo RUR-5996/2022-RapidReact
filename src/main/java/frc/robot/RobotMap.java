@@ -1,10 +1,13 @@
 package frc.robot;
 
 import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 import com.kauailabs.navx.frc.AHRS;
+import com.revrobotics.CANSparkMax;
 import com.revrobotics.ColorSensorV3;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.DigitalInput;
@@ -51,13 +54,13 @@ public class RobotMap {
     static final WPI_VictorSPX climberLarge = new WPI_VictorSPX(7);
     static final WPI_VictorSPX climberLeft = new WPI_VictorSPX(6);
     static final WPI_VictorSPX climberRight = new WPI_VictorSPX(5);
-    static final WPI_VictorSPX climberRotate = new WPI_VictorSPX(8);
+    // static final WPI_VictorSPX climberRotate = new WPI_VictorSPX(8);
 
     // Intake
-    public static final WPI_VictorSPX intake = new WPI_VictorSPX(12);
+    static final WPI_VictorSPX intake = new WPI_VictorSPX(8);
 
-    public static final WPI_VictorSPX shooterBottom = new WPI_VictorSPX(11);
-    public static final WPI_VictorSPX shooterTop = new WPI_VictorSPX(10);
+    static final CANSparkMax shooterTop = new CANSparkMax(9, MotorType.kBrushed);
+    static final CANSparkMax shooterBottom = new CANSparkMax(10, MotorType.kBrushed);
 
     // Pneumatics
     // public static final Compressor compressor = new Compressor(ModuleType.kCTRE);
@@ -78,6 +81,6 @@ public class RobotMap {
         climberLarge.setNeutralMode(NeutralMode.Brake);
         climberLeft.setNeutralMode(NeutralMode.Brake);
         climberRight.setNeutralMode(NeutralMode.Brake);
-        climberRotate.setNeutralMode(NeutralMode.Brake);
+        // climberRotate.setNeutralMode(NeutralMode.Brake);
     }
 }
