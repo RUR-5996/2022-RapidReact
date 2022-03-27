@@ -21,25 +21,30 @@ public class Lednice {
     static Task task = Task.NONE;
     static Shooting shooting = Shooting.LOW;
 
+    static Task previousTask = Task.NONE;
+
     static boolean preparingWithBall = false;
 
     static Timer prepareTimer = new Timer();
     static Timer shootingTimer = new Timer();
 
-    static final double INTAKE_CONSTANT = -0.7;
+    static final double INTAKE_CONSTANT = -0.65;
     static final double SHOOTER_LOW_CONSTANT = -0.55;
     static final double SHOOTER_HIGH_CONSTANT = -0.85;
+    static final double INTAKE_CONSTANT_LOW_AF = -0.4;
 
     private static void toggleTask(Task taskToToggle, boolean condition) {
-        shootingTimer.stop();
-        shootingTimer.reset();
-
-        prepareTimer.stop();
-        prepareTimer.reset();
-
-        preparingWithBall = false;
-
         if (condition) {
+            shootingTimer.stop();
+            shootingTimer.reset();
+
+            prepareTimer.stop();
+            prepareTimer.reset();
+
+            preparingWithBall = false;
+
+            previousTask = task;
+
             if (task == taskToToggle)
                 task = Task.NONE;
             else
@@ -48,7 +53,7 @@ public class Lednice {
     }
 
     public static void periodic() {
-        SmartDashboard.putString("enum lednice", task.toString());
+        SmartDashboard.putString("Enum lednice", task.toString());
         if (RobotMap.controller.getXButtonPressed()) {
             toggleTask(Task.PREPARE_TO_SHOOT, true);
             shooting = Shooting.LOW;
@@ -61,8 +66,12 @@ public class Lednice {
 
         toggleTask(Task.INTAKE, RobotMap.controller.getRightBumperPressed());
 
-        if (RobotMap.controller.getLeftBumper())
+        if (RobotMap.controller.getLeftBumperPressed()) {
+            previousTask = task;
             task = Task.REVERSE;
+        } else if (RobotMap.controller.getLeftBumperReleased()) {
+            task = previousTask;
+        }
 
         setMotors();
     }
@@ -120,12 +129,13 @@ public class Lednice {
                 if (BallCounter.ballCount() == 0) {
                     RobotMap.intake.set(INTAKE_CONSTANT);
                     RobotMap.shooterTop.set(0);
-                    RobotMap.shooterBottom.set(0);
+                    RobotMap.shooterBottom.set(INTAKE_CONSTANT);
                 } else if (BallCounter.ballCount() == 2) {
                     RobotMap.intake.set(0);
                     RobotMap.shooterTop.set(0);
                     RobotMap.shooterBottom.set(0);
                 } else if (BallCounter.isTopBallPresent()) {
+                    // Single ball
                     RobotMap.intake.set(INTAKE_CONSTANT);
                     RobotMap.shooterTop.set(0);
                     RobotMap.shooterBottom.set(0);
@@ -135,12 +145,6 @@ public class Lednice {
                     RobotMap.shooterBottom.set(INTAKE_CONSTANT);
                 }
                 break;
-        }
-
-        if (BallCounter.ballCount() == 1 && !BallCounter.isBottomBallPresent()) {
-            RobotMap.intake.set(INTAKE_CONSTANT);
-            RobotMap.shooterTop.set(0);
-            RobotMap.shooterBottom.set(0);
         }
     }
 }

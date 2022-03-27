@@ -4,7 +4,9 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.*;
 
 public class BallCounter {
-    public static int ballCount() {
+    private static final int PROXIMITY_THRESHOLD = 120;
+
+    private static int ballCountt() {
         boolean top = isTopBallPresent(), bottom = isBottomBallPresent();
 
         if (top && bottom)
@@ -15,13 +17,19 @@ public class BallCounter {
             return 0;
     }
 
+    public static int ballCount() {
+        SmartDashboard.putNumber("Ball count", ballCountt());
+        return ballCountt();
+    }
+
     public static boolean isTopBallPresent() {
         int proximity = RobotMap.colorSensor.getProximity();
-        SmartDashboard.putNumber("Color sensor proximity", proximity);
-        return proximity > 1800;
+        SmartDashboard.putBoolean("Proximity", proximity > PROXIMITY_THRESHOLD);
+        return proximity > PROXIMITY_THRESHOLD;
     }
 
     public static boolean isBottomBallPresent() {
-        return RobotMap.ballButton.get();
+        SmartDashboard.putBoolean("Ball button", !RobotMap.ballButton.get());
+        return !RobotMap.ballButton.get();
     }
 }
