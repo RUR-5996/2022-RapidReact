@@ -8,6 +8,9 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.ColorSensorV3;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
@@ -21,6 +24,9 @@ import edu.wpi.first.wpilibj2.command.button.Button;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 public class RobotMap {
+
+    public static final AHRS navX = new AHRS(SPI.Port.kMXP);
+
     // Controller
     public static final XboxController controller = new XboxController(0);
     public static final Joystick joystick = new Joystick(1);
@@ -49,6 +55,8 @@ public class RobotMap {
 
     public static final DifferentialDrive drive = new DifferentialDrive(leftControllerGroup, rightControllerGroup);
 
+    public static final DifferentialDriveOdometry odometry = new DifferentialDriveOdometry(Rotation2d.fromDegrees(-navX.getAngle()), new Pose2d(5, 5, new Rotation2d())); //feed in starting position (x, y, rot);
+
     // Climber
     static final WPI_VictorSPX climberLarge = new WPI_VictorSPX(7);
     static final WPI_VictorSPX climberLeft = new WPI_VictorSPX(6);
@@ -70,7 +78,6 @@ public class RobotMap {
     public static final DoubleSolenoid frontHook = new DoubleSolenoid(12, PneumaticsModuleType.CTREPCM, 7, 5);
 
     // Sensors
-    public static final AHRS navX = new AHRS(SPI.Port.kMXP);
 
     public static final DigitalInput ballButton = new DigitalInput(0);
     public static final ColorSensorV3 colorSensor = new ColorSensorV3(edu.wpi.first.wpilibj.I2C.Port.kOnboard);
