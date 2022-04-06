@@ -11,7 +11,6 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
-import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Joystick;
@@ -22,6 +21,7 @@ import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj2.command.button.Button;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import frc.robot.sensors.Ultrasonic;
 
 public class RobotMap {
 
@@ -44,10 +44,10 @@ public class RobotMap {
 
     // Left
     static final WPI_TalonSRX frontLeft = new WPI_TalonSRX(2);
-    static final WPI_TalonSRX rearLeft = new WPI_TalonSRX(1);
+    public static final WPI_TalonSRX rearLeft = new WPI_TalonSRX(1);
     // Right
     static final WPI_TalonSRX frontRight = new WPI_TalonSRX(3);
-    static final WPI_TalonSRX rearRight = new WPI_TalonSRX(4);
+    public static final WPI_TalonSRX rearRight = new WPI_TalonSRX(4);
 
     // Drive
     static final MotorControllerGroup leftControllerGroup = new MotorControllerGroup(rearLeft, frontLeft);
@@ -55,7 +55,9 @@ public class RobotMap {
 
     public static final DifferentialDrive drive = new DifferentialDrive(leftControllerGroup, rightControllerGroup);
 
-    public static final DifferentialDriveOdometry odometry = new DifferentialDriveOdometry(Rotation2d.fromDegrees(-navX.getAngle()), new Pose2d(5, 5, new Rotation2d())); //feed in starting position (x, y, rot);
+    public static final DifferentialDriveOdometry odometry = new DifferentialDriveOdometry(
+            Rotation2d.fromDegrees(-navX.getAngle()),
+            new Pose2d(5, 5, new Rotation2d()));
 
     // Climber
     static final WPI_VictorSPX climberLarge = new WPI_VictorSPX(7);
@@ -81,7 +83,9 @@ public class RobotMap {
 
     public static final DigitalInput ballButton = new DigitalInput(0);
     public static final ColorSensorV3 colorSensor = new ColorSensorV3(edu.wpi.first.wpilibj.I2C.Port.kOnboard);
-    public static final AnalogInput ultrasonic = new AnalogInput(0);
+
+    public static final Ultrasonic alignerLeft = new Ultrasonic(0);
+    public static final Ultrasonic alignerRight = new Ultrasonic(1);
 
     public static void climberInit() {
         climberLarge.setNeutralMode(NeutralMode.Brake);

@@ -16,7 +16,9 @@ public class Odometry {
     static double rot = 0;
 
     public static void periodic() {
-        pose = RobotMap.odometry.update(Rotation2d.fromDegrees(-RobotMap.navX.getAngle()), Constants.leftDistance,
+        pose = RobotMap.odometry.update(
+                Rotation2d.fromDegrees(-RobotMap.navX.getAngle()),
+                Constants.leftDistance,
                 Constants.rightDistance);
         x = pose.getX(); // meters
         y = pose.getY(); // meters

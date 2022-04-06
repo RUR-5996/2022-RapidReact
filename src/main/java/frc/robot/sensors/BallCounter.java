@@ -6,7 +6,11 @@ import frc.robot.*;
 public class BallCounter {
     private static final int PROXIMITY_THRESHOLD = 120;
 
-    private static int ballCountt() {
+    public static void periodic() {
+        SmartDashboard.putNumber("Balls", ballCount());
+    }
+
+    public static int ballCount() {
         boolean top = isTopBallPresent(), bottom = isBottomBallPresent();
 
         if (top && bottom)
@@ -15,11 +19,6 @@ public class BallCounter {
             return 1;
         else
             return 0;
-    }
-
-    public static int ballCount() {
-        SmartDashboard.putNumber("Ball count", ballCountt());
-        return ballCountt();
     }
 
     public static boolean isTopBallPresent() {

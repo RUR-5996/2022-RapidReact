@@ -8,19 +8,29 @@ public class Drive {
 
     static boolean slowMode = false;
 
+    static boolean aimingForHub = false;
+
     public static void periodic() {
-        double speed = -RobotMap.controller.getLeftY() * SPEED_CONSTANT;
-        double rotation = RobotMap.controller.getRightX() * ROTATION_CONSTANT;
+        if (RobotMap.controller.getLeftTriggerAxis() > 0.1) {
+            double angle = Limelight.getAngleToHub();
+            double rotation = angle / 28 * RobotMap.controller.getLeftTriggerAxis();
 
-        if (RobotMap.controller.getStartButtonPressed())
-            slowMode = !slowMode;
+            if (angle > 1 || angle < -1)
+                RobotMap.drive.arcadeDrive(rotation, 0, true);
+        } else {
+            double speed = -RobotMap.controller.getLeftY() * SPEED_CONSTANT;
+            double rotation = RobotMap.controller.getRightX() * ROTATION_CONSTANT;
 
-        SmartDashboard.putBoolean("Slow mode", slowMode);
+            if (RobotMap.controller.getStartButtonPressed())
+                slowMode = !slowMode;
 
-        // True to square the speed for finer control
-        RobotMap.drive.arcadeDrive(
-                rotation * (slowMode ? 0.8 : 1),
-                speed * (slowMode ? 0.6 : 1),
-                true);
+            SmartDashboard.putBoolean("Slow mode", slowMode);
+
+            // True to square the speed for finer control
+            RobotMap.drive.arcadeDrive(
+                    rotation * (slowMode ? 0.8 : 1),
+                    speed * (slowMode ? 0.6 : 1),
+                    true);
+        }
     }
 }

@@ -1,12 +1,15 @@
 package frc.robot.sensors;
 
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.*;
+import edu.wpi.first.wpilibj.AnalogInput;
 
 public class Ultrasonic {
-    public static double getDistance() {
-        double distance = RobotMap.ultrasonic.getVoltage() * 0.976;
-        SmartDashboard.putNumber("Ultrasonic", distance);
-        return distance;
+    AnalogInput sensor;
+
+    public Ultrasonic(int port) {
+        sensor = new AnalogInput(port);
+    }
+
+    public double getDistance() {
+        return sensor.getVoltage() * 0.976;
     }
 }

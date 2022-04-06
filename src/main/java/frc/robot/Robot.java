@@ -10,6 +10,8 @@ import frc.robot.sensors.NavX;
 public class Robot extends TimedRobot {
     @Override
     public void robotInit() {
+        NavX.periodic();
+
         RobotMap.climberInit();
     }
 
@@ -21,11 +23,12 @@ public class Robot extends TimedRobot {
 
     @Override
     public void autonomousInit() {
+        Autonomous.init();
     }
 
     @Override
     public void autonomousPeriodic() {
-        // Autonomous.periodic();
+        Autonomous.periodic();
     }
 
     @Override

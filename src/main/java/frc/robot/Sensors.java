@@ -5,9 +5,9 @@ import frc.robot.sensors.*;
 public class Sensors {
     public static void periodic() {
         NavX.periodic();
-        Ultrasonic.getDistance();
-        Encoders.getDriveDist();
+        Aligner.periodic();
+        BallCounter.periodic();
         Odometry.periodic();
-        // BallCounter.isTopBallPresent();
+        Encoders.periodic();
     }
 }

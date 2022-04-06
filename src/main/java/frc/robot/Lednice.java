@@ -54,6 +54,7 @@ public class Lednice {
 
     public static void periodic() {
         SmartDashboard.putString("Enum lednice", task.toString());
+
         if (RobotMap.controller.getXButtonPressed()) {
             toggleTask(Task.PREPARE_TO_SHOOT, true);
             shooting = Shooting.LOW;
