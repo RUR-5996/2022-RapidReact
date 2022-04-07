@@ -5,7 +5,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.sensors.*;
 
 public class Lednice {
-    enum Task {
+    public enum Task {
         NONE,
         SHOOTING,
         REVERSE,
@@ -18,7 +18,7 @@ public class Lednice {
         HIGH,
     }
 
-    static Task task = Task.NONE;
+    public static Task task = Task.NONE;
     static Shooting shooting = Shooting.LOW;
 
     static Task previousTask = Task.NONE;
