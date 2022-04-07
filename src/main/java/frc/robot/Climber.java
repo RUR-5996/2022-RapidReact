@@ -25,14 +25,14 @@ public class Climber {
         else
             clawsMoveable = Direction.NONE;
 
-        if (RobotMap.controller.getPOV() == 0)
+        if (RobotMap.staticUp.get())
             clawsStatic = Direction.UP;
-        else if (RobotMap.controller.getPOV() == 180)
+        else if (RobotMap.staticDown.get())
             clawsStatic = Direction.DOWN;
         else
             clawsStatic = Direction.NONE;
 
-        if (RobotMap.controller.getBButton()) {
+        if (RobotMap.controller.getBackButton()) {
             if (!lastPressed) {
                 lastPressed = true;
                 clawsOpen = !clawsOpen;
@@ -75,12 +75,10 @@ public class Climber {
         // else
         // RobotMap.climberRotate.set(0);
 
-        if (clawsOpen) {
-            RobotMap.frontHook.set(Value.kForward);
-            RobotMap.rearHook.set(Value.kForward);
-        } else {
-            RobotMap.frontHook.set(Value.kReverse);
-            RobotMap.rearHook.set(Value.kReverse);
-        }
+        if (clawsOpen)
+            RobotMap.claws.set(Value.kForward);
+        else
+            RobotMap.claws.set(Value.kReverse);
+
     }
 }
