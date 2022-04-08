@@ -41,6 +41,7 @@ public class RobotMap {
     public static final Button rotateBackward = new JoystickButton(joystick, 2);
 
     public static final Button clawsToggle = new JoystickButton(joystick, 9);
+    public static final Button armsToggle = new JoystickButton(joystick, 8);
 
     // Left
     static final WPI_TalonSRX frontLeft = new WPI_TalonSRX(2);

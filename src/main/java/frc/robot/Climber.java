@@ -12,8 +12,10 @@ public class Climber {
     static Direction clawsMoveable = Direction.NONE;
     static Direction clawsStatic = Direction.NONE;
     static boolean clawsOpen = true;
+    static boolean armsOpen = false;
 
-    static boolean lastPressed = false;
+    static boolean lastPressedClaws = false;
+    static boolean lastPressedArms = false;
 
     static final double CLIMBER_CONSTANT = 0.7;
 
@@ -32,13 +34,22 @@ public class Climber {
         else
             clawsStatic = Direction.NONE;
 
-        if (RobotMap.controller.getBackButton()) {
-            if (!lastPressed) {
-                lastPressed = true;
+        if (RobotMap.clawsToggle.get()) {
+            if (!lastPressedClaws) {
+                lastPressedClaws = true;
                 clawsOpen = !clawsOpen;
             }
         } else {
-            lastPressed = false;
+            lastPressedClaws = false;
+        }
+
+        if (RobotMap.armsToggle.get()) {
+            if (!lastPressedArms) {
+                lastPressedArms = true;
+                armsOpen = !armsOpen;
+            }
+        } else {
+            lastPressedArms = false;
         }
 
         switch (clawsMoveable) {
@@ -79,6 +90,11 @@ public class Climber {
             RobotMap.claws.set(Value.kForward);
         else
             RobotMap.claws.set(Value.kReverse);
+
+        if (armsOpen)
+            RobotMap.arms.set(Value.kForward);
+        else
+            RobotMap.arms.set(Value.kReverse);
 
     }
 }

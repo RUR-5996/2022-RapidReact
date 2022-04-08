@@ -5,13 +5,10 @@ import frc.robot.RobotMap;
 
 public class Tykadla {
     static boolean out = false;
-    
+
     public static void periodic() {
-        if (RobotMap.controller.getPOV() == 90) { // D-pad right
-            out = true;
-        } else if (RobotMap.controller.getPOV() == 270) { // D-pad left
-            out = false;
-        }
+        if (RobotMap.controller.getBackButtonPressed())
+            out = !out;
 
         if (out) {
             RobotMap.leftIntake.set(Value.kForward);

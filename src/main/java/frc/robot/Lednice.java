@@ -19,7 +19,7 @@ public class Lednice {
     }
 
     public static Task task = Task.NONE;
-    static Shooting shooting = Shooting.LOW;
+    static Shooting shooting = Shooting.HIGH;
 
     static Task previousTask = Task.NONE;
 
@@ -28,9 +28,9 @@ public class Lednice {
     static Timer prepareTimer = new Timer();
     static Timer shootingTimer = new Timer();
 
-    static final double INTAKE_CONSTANT = -0.65;
-    static final double SHOOTER_LOW_CONSTANT = -0.55;
-    static final double SHOOTER_HIGH_CONSTANT = -0.85;
+    static final double INTAKE_CONSTANT = -0.35;
+    static double SHOOTER_LOW_CONSTANT = -0.4;
+    static double SHOOTER_HIGH_CONSTANT = -0.4;
     static final double INTAKE_CONSTANT_LOW_AF = -0.4;
 
     private static void toggleTask(Task taskToToggle, boolean condition) {
@@ -60,10 +60,12 @@ public class Lednice {
             shooting = Shooting.LOW;
         }
 
-        if (RobotMap.controller.getYButtonPressed()) {
-            toggleTask(Task.PREPARE_TO_SHOOT, true);
-            shooting = Shooting.HIGH;
-        }
+        toggleTask(Task.SHOOTING, RobotMap.controller.getYButtonPressed());
+
+        // if (RobotMap.controller.getYButtonPressed()) {
+        // toggleTask(Task.PREPARE_TO_SHOOT, true);
+        // shooting = Shooting.HIGH;
+        // }
 
         toggleTask(Task.INTAKE, RobotMap.controller.getRightBumperPressed());
 
@@ -75,6 +77,9 @@ public class Lednice {
         }
 
         setMotors();
+
+        SHOOTER_LOW_CONSTANT = SmartDashboard.getNumber("lowShooter", -0.55);
+        SHOOTER_HIGH_CONSTANT = SmartDashboard.getNumber("highShooter", -0.55);
     }
 
     static void setMotors() {

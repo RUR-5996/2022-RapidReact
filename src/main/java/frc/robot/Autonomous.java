@@ -13,10 +13,10 @@ public class Autonomous {
 
     public static void init() {
         switch (mode) {
+            case SIMPLE:
+                Simple.init();
             case PATHWEAVER:
                 PathWeaver.init();
-                break;
-            default:
                 break;
         }
 
