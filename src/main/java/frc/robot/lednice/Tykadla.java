@@ -1,6 +1,7 @@
 package frc.robot.lednice;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.RobotMap;
 
 public class Tykadla {
@@ -10,12 +11,12 @@ public class Tykadla {
         if (RobotMap.controller.getBackButtonPressed())
             out = !out;
 
+        SmartDashboard.putBoolean("Tykadla", out);
+
         if (out) {
-            RobotMap.leftIntake.set(Value.kForward);
-            RobotMap.rightIntake.set(Value.kForward);
+            RobotMap.tykadla.set(Value.kForward);
         } else {
-            RobotMap.leftIntake.set(Value.kReverse);
-            RobotMap.rightIntake.set(Value.kReverse);
+            RobotMap.tykadla.set(Value.kReverse);
         }
     }
 }

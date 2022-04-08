@@ -9,8 +9,8 @@ public class Lednice {
         NONE,
         SHOOTING,
         REVERSE,
-        PREPARE_TO_SHOOT,
         INTAKE,
+        AUTO,
     }
 
     enum Shooting {
@@ -23,63 +23,35 @@ public class Lednice {
 
     static Task previousTask = Task.NONE;
 
-    static boolean preparingWithBall = false;
-
-    static Timer prepareTimer = new Timer();
     static Timer shootingTimer = new Timer();
 
     static final double INTAKE_CONSTANT = -0.35;
-    static double SHOOTER_LOW_CONSTANT = -0.4;
-    static double SHOOTER_HIGH_CONSTANT = -0.4;
-    static final double INTAKE_CONSTANT_LOW_AF = -0.4;
 
-    private static void toggleTask(Task taskToToggle, boolean condition) {
-        if (condition) {
-            shootingTimer.stop();
-            shootingTimer.reset();
-
-            prepareTimer.stop();
-            prepareTimer.reset();
-
-            preparingWithBall = false;
-
-            previousTask = task;
-
-            if (task == taskToToggle)
-                task = Task.NONE;
-            else
-                task = taskToToggle;
-        }
-    }
+    static double shooterSpeed;
 
     public static void periodic() {
         SmartDashboard.putString("Enum lednice", task.toString());
 
-        if (RobotMap.controller.getXButtonPressed()) {
-            toggleTask(Task.PREPARE_TO_SHOOT, true);
+        if (RobotMap.controller.getXButton()) {
+            task = Task.SHOOTING;
             shooting = Shooting.LOW;
+        } else if (RobotMap.controller.getYButton()) {
+            shooting = Shooting.HIGH;
+            task = Task.SHOOTING;
+        } else if (RobotMap.controller.getRightBumper()) {
+            task = Task.INTAKE;
+        } else {
+            task = Task.NONE;
         }
 
-        toggleTask(Task.SHOOTING, RobotMap.controller.getYButtonPressed());
+        shooterSpeed = 0.15 + 0.6 * (RobotMap.joystick.getZ() + 1) / 2;
+        SmartDashboard.putNumber("Shooter speed", shooterSpeed);
 
-        // if (RobotMap.controller.getYButtonPressed()) {
-        // toggleTask(Task.PREPARE_TO_SHOOT, true);
-        // shooting = Shooting.HIGH;
-        // }
-
-        toggleTask(Task.INTAKE, RobotMap.controller.getRightBumperPressed());
-
-        if (RobotMap.controller.getLeftBumperPressed()) {
-            previousTask = task;
+        double triggerLeft = RobotMap.controller.getLeftTriggerAxis();
+        if (triggerLeft > 0.2)
             task = Task.REVERSE;
-        } else if (RobotMap.controller.getLeftBumperReleased()) {
-            task = previousTask;
-        }
 
         setMotors();
-
-        SHOOTER_LOW_CONSTANT = SmartDashboard.getNumber("lowShooter", -0.55);
-        SHOOTER_HIGH_CONSTANT = SmartDashboard.getNumber("highShooter", -0.55);
     }
 
     static void setMotors() {
@@ -90,66 +62,28 @@ public class Lednice {
                 RobotMap.shooterBottom.set(0);
                 break;
 
-            case PREPARE_TO_SHOOT:
-                if (BallCounter.isTopBallPresent()) {
-                    prepareTimer.start();
-
-                    preparingWithBall = true;
-
-                    RobotMap.intake.set(-INTAKE_CONSTANT);
-                    RobotMap.shooterTop.set(0);
-                    RobotMap.shooterBottom.set(-INTAKE_CONSTANT);
-                }
-
-                // If started preparing with no top ball
-                // or 0.5s has elapsed
-                if (!preparingWithBall || prepareTimer.hasElapsed(0.5)) {
-                    task = Task.SHOOTING;
-                }
-
-                break;
-
             case SHOOTING:
-                shootingTimer.start();
+                RobotMap.shooterTop.set(-shooterSpeed);
+                RobotMap.shooterBottom.set(
+                        -shooterSpeed * (shooting == Shooting.LOW ? 1 : 1.35));
 
-                double speed = (shooting == Shooting.LOW)
-                        ? SHOOTER_LOW_CONSTANT
-                        : SHOOTER_HIGH_CONSTANT;
-
-                RobotMap.shooterTop.set(speed);
-                RobotMap.shooterBottom.set(speed);
-
-                if (shootingTimer.hasElapsed(1))
-                    RobotMap.intake.set(INTAKE_CONSTANT);
-                else
-                    RobotMap.intake.set(0);
-                break;
+                RobotMap.intake.set(-INTAKE_CONSTANT);
 
             case REVERSE:
                 RobotMap.intake.set(-INTAKE_CONSTANT);
-                RobotMap.shooterTop.set(-INTAKE_CONSTANT);
-                RobotMap.shooterBottom.set(-INTAKE_CONSTANT);
+                RobotMap.shooterTop.set(INTAKE_CONSTANT);
+                RobotMap.shooterBottom.set(INTAKE_CONSTANT);
                 break;
 
             case INTAKE:
-                if (BallCounter.ballCount() == 0) {
-                    RobotMap.intake.set(INTAKE_CONSTANT);
-                    RobotMap.shooterTop.set(0);
-                    RobotMap.shooterBottom.set(INTAKE_CONSTANT);
-                } else if (BallCounter.ballCount() == 2) {
-                    RobotMap.intake.set(0);
-                    RobotMap.shooterTop.set(0);
-                    RobotMap.shooterBottom.set(0);
-                } else if (BallCounter.isTopBallPresent()) {
-                    // Single ball
-                    RobotMap.intake.set(INTAKE_CONSTANT);
-                    RobotMap.shooterTop.set(0);
-                    RobotMap.shooterBottom.set(0);
-                } else if (BallCounter.isBottomBallPresent()) {
-                    RobotMap.intake.set(INTAKE_CONSTANT);
-                    RobotMap.shooterTop.set(0);
-                    RobotMap.shooterBottom.set(INTAKE_CONSTANT);
-                }
+                RobotMap.intake.set(INTAKE_CONSTANT);
+                RobotMap.shooterBottom.set(-INTAKE_CONSTANT);
+                break;
+
+            case AUTO:
+                RobotMap.intake.set(INTAKE_CONSTANT);
+                RobotMap.shooterTop.set(-0.15);
+                RobotMap.shooterBottom.set(-0.15);
                 break;
         }
     }

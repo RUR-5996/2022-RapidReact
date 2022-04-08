@@ -5,6 +5,7 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
+import frc.robot.lednice.Tykadla;
 import frc.robot.sensors.NavX;
 
 public class Robot extends TimedRobot {
@@ -29,6 +30,7 @@ public class Robot extends TimedRobot {
     @Override
     public void autonomousPeriodic() {
         Autonomous.periodic();
+        Lednice.periodic();
     }
 
     @Override
@@ -40,6 +42,7 @@ public class Robot extends TimedRobot {
         Drive.periodic();
         Lednice.periodic();
         Climber.periodic();
+        Tykadla.periodic();
     }
 
     @Override

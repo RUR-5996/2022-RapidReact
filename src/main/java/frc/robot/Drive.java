@@ -3,7 +3,7 @@ package frc.robot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Drive {
-    static final double SPEED_CONSTANT = 0.8;
+    static final double SPEED_CONSTANT = 0.85;
     static final double ROTATION_CONSTANT = 0.65;
 
     static boolean slowMode = false;

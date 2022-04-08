@@ -1,6 +1,7 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Climber {
     enum Direction {
@@ -11,7 +12,7 @@ public class Climber {
 
     static Direction clawsMoveable = Direction.NONE;
     static Direction clawsStatic = Direction.NONE;
-    static boolean clawsOpen = true;
+    static boolean clawsOpen = false;
     static boolean armsOpen = false;
 
     static boolean lastPressedClaws = false;
@@ -42,6 +43,7 @@ public class Climber {
         } else {
             lastPressedClaws = false;
         }
+        SmartDashboard.putBoolean("Claws", clawsOpen);
 
         if (RobotMap.armsToggle.get()) {
             if (!lastPressedArms) {

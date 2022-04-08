@@ -14,11 +14,15 @@ public class Simple {
     }
 
     public static void periodic() {
-        if (!timer.hasElapsed(2)) {
+        if (!timer.hasElapsed(1)) {
             RobotMap.drive.arcadeDrive(0, -1);
-            Lednice.task = Task.INTAKE;
         } else {
             RobotMap.drive.arcadeDrive(0, 0);
+        }
+
+        if (!timer.hasElapsed(3)) {
+            Lednice.task = Task.AUTO;
+        } else {
             Lednice.task = Task.NONE;
         }
     }

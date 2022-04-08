@@ -15,6 +15,7 @@ public class Autonomous {
         switch (mode) {
             case SIMPLE:
                 Simple.init();
+                break;
             case PATHWEAVER:
                 PathWeaver.init();
                 break;

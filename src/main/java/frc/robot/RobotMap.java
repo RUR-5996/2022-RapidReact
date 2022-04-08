@@ -29,6 +29,7 @@ public class RobotMap {
 
     // Controller
     public static final XboxController controller = new XboxController(0);
+
     public static final Joystick joystick = new Joystick(1);
 
     public static final Button moveableUp = new JoystickButton(joystick, 6);
@@ -69,16 +70,17 @@ public class RobotMap {
     // Intake
     static final WPI_TalonFX intake = new WPI_TalonFX(8);
 
-    static final CANSparkMax shooterTop = new CANSparkMax(9, MotorType.kBrushed);
-    static final CANSparkMax shooterBottom = new CANSparkMax(10, MotorType.kBrushed);
+    static final WPI_TalonFX shooterTop = new WPI_TalonFX(9);
+    static final WPI_TalonFX shooterBottom = new WPI_TalonFX(10);
 
     // Pneumatics
-    public static final DoubleSolenoid leftIntake = new DoubleSolenoid(12, PneumaticsModuleType.CTREPCM, 1, 3);
-    public static final DoubleSolenoid rightIntake = new DoubleSolenoid(12, PneumaticsModuleType.CTREPCM, 0, 2);
+    // public static final DoubleSolenoid leftIntake = new DoubleSolenoid(12,
+    // PneumaticsModuleType.CTREPCM, 2, 3);
+    public static final DoubleSolenoid tykadla = new DoubleSolenoid(12, PneumaticsModuleType.CTREPCM, 7, 5);
 
-    public static final DoubleSolenoid claws = new DoubleSolenoid(12, PneumaticsModuleType.CTREPCM, 6, 4);
+    public static final DoubleSolenoid claws = new DoubleSolenoid(12, PneumaticsModuleType.CTREPCM, 4, 6);
 
-    public static final DoubleSolenoid arms = new DoubleSolenoid(12, PneumaticsModuleType.CTREPCM, 7, 5);
+    public static final DoubleSolenoid arms = new DoubleSolenoid(12, PneumaticsModuleType.CTREPCM, 3, 2);
 
     // Sensors
     public static final DigitalInput ballButton = new DigitalInput(0);
