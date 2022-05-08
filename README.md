@@ -1,10 +1,21 @@
-# 🤖 2022 – Rapid React
+Big thanks on this project goes to team 3630. Their publicly available code made programming the swerve much easier.
 
-Robot code for the FRC team **#5996**
+Some TODOs:
 
-**TODO:** 
-- [ ] finish tasks in lednice
-- [ ] make autonomous driving
-- [ ] get good at shooting
-- [ ] add Limelight code
-- [ ] get ready for climbing
+-build the robot for it
+
+-add comments
+
+-test if it works
+
+-debug and add more rliable structures
+
+-add field-oriented driving
+
+.
+
+.
+
+.
+
+-make it into a lib (?)
