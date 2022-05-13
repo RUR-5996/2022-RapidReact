@@ -14,7 +14,7 @@ public class Simple {
     }
 
     public static void periodic() {
-        if (!timer.hasElapsed(1)) {
+        if (timer.hasElapsed(3) && !timer.hasElapsed(4)) {
             RobotMap.drive.arcadeDrive(0, -1);
         } else {
             RobotMap.drive.arcadeDrive(0, 0);
@@ -25,5 +25,6 @@ public class Simple {
         } else {
             Lednice.task = Task.NONE;
         }
+        Lednice.setMotors();
     }
 }

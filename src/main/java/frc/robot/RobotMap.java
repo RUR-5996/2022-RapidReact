@@ -32,8 +32,8 @@ public class RobotMap {
 
     public static final Joystick joystick = new Joystick(1);
 
-    public static final Button moveableUp = new JoystickButton(joystick, 6);
-    public static final Button moveableDown = new JoystickButton(joystick, 7);
+    public static final Button moveableDown = new JoystickButton(joystick, 6);
+    public static final Button moveableUp = new JoystickButton(joystick, 7);
 
     public static final Button staticUp = new JoystickButton(joystick, 11);
     public static final Button staticDown = new JoystickButton(joystick, 10);

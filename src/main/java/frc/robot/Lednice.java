@@ -54,7 +54,7 @@ public class Lednice {
         setMotors();
     }
 
-    static void setMotors() {
+    public static void setMotors() {
         switch (task) {
             case NONE:
                 RobotMap.intake.set(0);
@@ -63,11 +63,12 @@ public class Lednice {
                 break;
 
             case SHOOTING:
-                RobotMap.shooterTop.set(-shooterSpeed);
+                RobotMap.shooterTop.set(shooterSpeed);
                 RobotMap.shooterBottom.set(
-                        -shooterSpeed * (shooting == Shooting.LOW ? 1 : 1.35));
+                        shooterSpeed * (shooting == Shooting.LOW ? 1 : 0.8));
 
-                RobotMap.intake.set(-INTAKE_CONSTANT);
+                RobotMap.intake.set(INTAKE_CONSTANT);
+                break;
 
             case REVERSE:
                 RobotMap.intake.set(-INTAKE_CONSTANT);
@@ -77,13 +78,13 @@ public class Lednice {
 
             case INTAKE:
                 RobotMap.intake.set(INTAKE_CONSTANT);
-                RobotMap.shooterBottom.set(-INTAKE_CONSTANT);
+                RobotMap.shooterTop.set(0);
+                RobotMap.shooterBottom.set(-INTAKE_CONSTANT * 1.2);
                 break;
 
             case AUTO:
                 RobotMap.intake.set(INTAKE_CONSTANT);
-                RobotMap.shooterTop.set(-0.15);
-                RobotMap.shooterBottom.set(-0.15);
+                RobotMap.shooterBottom.set(-INTAKE_CONSTANT * 1.2);
                 break;
         }
     }
