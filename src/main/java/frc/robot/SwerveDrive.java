@@ -8,7 +8,7 @@ import edu.wpi.first.wpilibj.XboxController;
 
 public class SwerveDrive {
 
-    public static XboxController controller = new XboxController(0);
+    static XboxController controller = SystemDef.controller;
     
     private static SwerveDrive SWERVE = new SwerveDrive();
     private static double xSpeed = 0;

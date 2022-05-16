@@ -16,6 +16,9 @@ import edu.wpi.first.wpilibj.TimedRobot;
  * project.
  */
 public class Robot extends TimedRobot {
+
+  static NeoSwerveDrive SWERVE;
+
   /**
    * This function is run when the robot is first started up and should be used
    * for any
@@ -23,6 +26,14 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
+    NeoSwerveDef.flModule.moduleInit();
+    NeoSwerveDef.frModule.moduleInit();
+    NeoSwerveDef.rlModule.moduleInit();
+    NeoSwerveDef.rrModule.moduleInit();
+
+    SWERVE = NeoSwerveDrive.getInstance();
+
+    SWERVE.init();
   }
 
   @Override
@@ -40,14 +51,23 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopInit() {
+    NeoSwerveDef.flModule.enabledInit();
+    NeoSwerveDef.frModule.enabledInit();
+    NeoSwerveDef.rlModule.enabledInit();
+    NeoSwerveDef.rrModule.enabledInit();
   }
 
   @Override
   public void teleopPeriodic() {
+    NeoSwerveDrive.periodic(); //probably going to explode
   }
 
   @Override
   public void disabledInit() {
+    NeoSwerveDef.flModule.disabledInit();
+    NeoSwerveDef.frModule.disabledInit();
+    NeoSwerveDef.rlModule.disabledInit();
+    NeoSwerveDef.rrModule.disabledInit();
   }
 
   @Override
