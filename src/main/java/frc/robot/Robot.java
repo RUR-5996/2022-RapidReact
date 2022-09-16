@@ -17,7 +17,7 @@ import edu.wpi.first.wpilibj.TimedRobot;
  */
 public class Robot extends TimedRobot {
 
-  static NeoSwerveDrive SWERVE;
+  static SwerveDrive SWERVE;
 
   /**
    * This function is run when the robot is first started up and should be used
@@ -26,14 +26,14 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
-    NeoSwerveDef.flModule.moduleInit();
-    NeoSwerveDef.frModule.moduleInit();
-    NeoSwerveDef.rlModule.moduleInit();
-    NeoSwerveDef.rrModule.moduleInit();
+    SwerveDef.flModule.moduleInit();
+    SwerveDef.frModule.moduleInit();
+    SwerveDef.rlModule.moduleInit();
+    SwerveDef.rrModule.moduleInit();
 
-    SWERVE = NeoSwerveDrive.getInstance();
+    SWERVE = SwerveDrive.getInstance();
 
-    SWERVE.init();
+    // SWERVE.init();
   }
 
   @Override
@@ -51,23 +51,27 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopInit() {
-    NeoSwerveDef.flModule.enabledInit();
-    NeoSwerveDef.frModule.enabledInit();
-    NeoSwerveDef.rlModule.enabledInit();
-    NeoSwerveDef.rrModule.enabledInit();
+    SwerveDef.flModule.enabledInit();
+    SwerveDef.frModule.enabledInit();
+    SwerveDef.rlModule.enabledInit();
+    SwerveDef.rrModule.enabledInit();
+    Turret.init();
+    Intake.init();
   }
 
   @Override
   public void teleopPeriodic() {
-    NeoSwerveDrive.periodic(); //probably going to explode
+    SwerveDrive.periodic(); // probably going to explode
+    Turret.periodic();
+    Intake.periodic();
   }
 
   @Override
   public void disabledInit() {
-    NeoSwerveDef.flModule.disabledInit();
-    NeoSwerveDef.frModule.disabledInit();
-    NeoSwerveDef.rlModule.disabledInit();
-    NeoSwerveDef.rrModule.disabledInit();
+    SwerveDef.flModule.disabledInit();
+    SwerveDef.frModule.disabledInit();
+    SwerveDef.rlModule.disabledInit();
+    SwerveDef.rrModule.disabledInit();
   }
 
   @Override
@@ -76,10 +80,12 @@ public class Robot extends TimedRobot {
 
   @Override
   public void testInit() {
+    SwerveDrive.testInit();
   }
 
   @Override
   public void testPeriodic() {
+    SwerveDrive.zeroDrive();
   }
 
   @Override
