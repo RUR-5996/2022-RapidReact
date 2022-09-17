@@ -1,5 +1,6 @@
 package frc.robot;
 
+import com.ctre.phoenix.motorcontrol.InvertType;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
@@ -7,6 +8,9 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Turret {
+
+    static double feedSleepTimer = 1.5;
+    static double shooterSpeed = 0.9;
 
     static boolean hoodDown = false;
     static boolean hoodUp = false;
@@ -65,6 +69,7 @@ public class Turret {
         SystemDef.turretMover.setNeutralMode(NeutralMode.Brake);
 
         SystemDef.feeder.configFactoryDefault();
+        SystemDef.feeder.setInverted(true);
         SystemDef.feeder.configNominalOutputForward(0, 20);
         SystemDef.feeder.configNominalOutputReverse(0, 20);
         SystemDef.feeder.configPeakOutputForward(1, 20);
@@ -80,16 +85,17 @@ public class Turret {
         if (SystemDef.logitechTrigger.get()) {
             if (feedSleep.get() == 0) {
                 feedSleep.start();
-                shoot(1);
-            } else if (feedSleep.get() >= 1) {
-                shoot(1);
+                shoot(shooterSpeed);
+            } else if (feedSleep.get() >= feedSleepTimer) {
+                shoot(shooterSpeed);
                 feed(1);
             }
         } else if (SystemDef.logitechSeven.get()) {
-            shoot(-0.75);
+            shoot(-0.9);
             feed(-0.75);
         } else {
             shoot(0);
+            feed(0);
             if (feedSleep.get() > 0) {
                 feedSleep.reset();
                 feedSleep.stop();
@@ -104,14 +110,14 @@ public class Turret {
             rotate(1);
             turretProtection(1);
         } else {
-            rotate(0);
+            rotate(0.31);
         }
 
         // hood
-        if (SystemDef.logitechTwo.get()) {
+        if (SystemDef.logitechThree.get()) {
             hoodAdjust(-1);
             hoodProtection(-1);
-        } else if (SystemDef.logitechThree.get()) {
+        } else if (SystemDef.logitechTwo.get()) {
             hoodAdjust(1);
             hoodProtection(1);
         } else {
@@ -126,15 +132,11 @@ public class Turret {
     }
 
     static void shoot(double ratio) {
-        SystemDef.shooter.set(0.6 * ratio);
+        SystemDef.shooter.set(1 * ratio);
     }
 
     static void rotate(double direction) {
-        SystemDef.turretMover.set(0.3 * direction);
-    }
-
-    static void reverse() {
-        SystemDef.shooter.set(-0.5);
+        SystemDef.turretMover.set(0.15 * direction);
     }
 
     static void hoodAdjust(double direction) {
@@ -154,6 +156,7 @@ public class Turret {
         SmartDashboard.putBoolean("hoodSafe", hoodSafe);
         SmartDashboard.putBoolean("hoodUp", hoodUp);
         SmartDashboard.putBoolean("hoodDown", hoodDown);
+        shooterSpeed = SmartDashboard.getNumber("shooterSpeed", 0.9);
     }
 
     // experimental

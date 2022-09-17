@@ -23,9 +23,9 @@ public class Intake {
 
     public static void periodic() {
         if (SystemDef.controller.getLeftTriggerAxis() > 0.75) {
-            intake(1);
+            intake(0.32);
         } else if (SystemDef.controller.getRightTriggerAxis() > 0.75) {
-            intake(-1);
+            intake(-0.3);
         } else {
             intake(0);
         }
@@ -46,7 +46,7 @@ public class Intake {
     }
 
     static void intake(double direction) {
-        SystemDef.intake.set(0.75 * direction);
+        SystemDef.intake.set(1 * direction);
     }
 
     static void inOut(Value direction) {

@@ -23,6 +23,7 @@ public class SystemDef {
      * right bumper: field oriented drive
      * a-button: set wheel position
      * y-button: intake in/out
+     * back button: reset gyro
      * 
      * logitech:
      * trigger: shoot

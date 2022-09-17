@@ -78,6 +78,10 @@ public class SwerveDrive {
             drive();
         }
 
+        if (controller.getBackButtonPressed()) {
+            gyroReset();
+        }
+
         // resetZero();
     }
 
@@ -162,5 +166,9 @@ public class SwerveDrive {
         SwerveDef.rrSteer.set(ControlMode.PercentOutput, rrInitController.pidGet());
 
         resetZero();
+    }
+
+    static void gyroReset() {
+        SwerveDef.gyro.reset();
     }
 }
