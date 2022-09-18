@@ -124,6 +124,7 @@ public class Turret {
             hoodAdjust(0);
         }
 
+        clampFeedSleep();
         resetHoodProtection();
         resetTurretProtection(); // if works, implement into logical tree (if left, cant go left etc.)
 
@@ -156,7 +157,9 @@ public class Turret {
         SmartDashboard.putBoolean("hoodSafe", hoodSafe);
         SmartDashboard.putBoolean("hoodUp", hoodUp);
         SmartDashboard.putBoolean("hoodDown", hoodDown);
+        // SmartDashboard.putNumber("shooterSpeed", shooterSpeed);
         shooterSpeed = SmartDashboard.getNumber("shooterSpeed", 0.9);
+        SmartDashboard.putNumber("feeder Delay", feedSleepTimer);
     }
 
     // experimental
@@ -223,4 +226,7 @@ public class Turret {
         }
     }
 
+    static void clampFeedSleep() {
+        feedSleepTimer = -SystemDef.logitech.getZ() + 2;
+    }
 }

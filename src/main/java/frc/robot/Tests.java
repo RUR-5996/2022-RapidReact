@@ -4,6 +4,7 @@ import com.kauailabs.navx.frc.AHRS;
 
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.SPI;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Tests {
@@ -15,6 +16,10 @@ public class Tests {
     // public static AnalogInput absRR = new AnalogInput(3);
 
     static double maxSpeed = -9999999; // in Rpm
+
+    public static void init() {
+        Shuffleboard.getTab("SmartDashboard").add(SwerveDef.gyro);
+    }
 
     public static void periodic() {
         SmartDashboard.putNumber("fl steer",
@@ -35,6 +40,9 @@ public class Tests {
                 .clampContinuousDegs(SwerveDef.rlModule.getBetterAnalogDegs() - SwerveDef.RL_STEER_OFFSET));
         SmartDashboard.putNumber("rr_sensor", SwerveDef.rrModule
                 .clampContinuousDegs(SwerveDef.rrModule.getBetterAnalogDegs() - SwerveDef.RR_STEER_OFFSET));
+
+        SmartDashboard.putNumber("gyro angle", SwerveDef.gyro.getRotation2d().getDegrees());
+
     }
 
     public static double voltageOverrun(double input) {

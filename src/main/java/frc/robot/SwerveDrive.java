@@ -62,16 +62,11 @@ public class SwerveDrive {
 
     public static void periodic() {
         if (controller.getLeftBumperPressed()) {
-            initRobotOriented();
-        } else if (controller.getRightBumperPressed()) {
             initFieldOriented();
+        } else if (controller.getRightBumperPressed()) {
+            initRobotOriented();
         }
 
-        if (SystemDef.logitech.getZ() > 0) {
-            addDriveCoeff = 1;
-        } else if (SystemDef.logitech.getZ() <= 0) {
-            addDriveCoeff = MF_DRIVE_COEFF;
-        }
         if (fieldRelative) {
             orientedDrive();
         } else {

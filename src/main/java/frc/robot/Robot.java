@@ -34,6 +34,8 @@ public class Robot extends TimedRobot {
     SWERVE = SwerveDrive.getInstance();
 
     // SWERVE.init();
+
+    Tests.init();
   }
 
   @Override
