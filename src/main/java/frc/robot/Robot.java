@@ -4,6 +4,9 @@
 
 package frc.robot;
 
+import com.pathplanner.lib.PathPlanner;
+import com.pathplanner.lib.PathPlannerTrajectory;
+
 import edu.wpi.first.wpilibj.TimedRobot;
 
 /**
@@ -18,6 +21,7 @@ import edu.wpi.first.wpilibj.TimedRobot;
 public class Robot extends TimedRobot {
 
   static SwerveDrive SWERVE;
+  static PathPlannerTrajectory trajectory;
 
   /**
    * This function is run when the robot is first started up and should be used
@@ -33,6 +37,8 @@ public class Robot extends TimedRobot {
 
     SWERVE = SwerveDrive.getInstance();
 
+    trajectory = PathPlanner.loadPath("somePath", 3, 2.5);
+
     // SWERVE.init();
 
     Tests.init();
@@ -45,10 +51,13 @@ public class Robot extends TimedRobot {
 
   @Override
   public void autonomousInit() {
+    Autonomous.newTrajectory();
   }
 
   @Override
   public void autonomousPeriodic() {
+    Autonomous.report();
+    Autonomous.runTrajectory(trajectory, SWERVE.odometry, SwerveDef.gyro.getRotation2d()); // vybuch??
   }
 
   @Override

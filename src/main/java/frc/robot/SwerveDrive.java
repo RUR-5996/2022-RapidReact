@@ -3,6 +3,7 @@ package frc.robot;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
@@ -96,6 +97,17 @@ public class SwerveDrive {
         SwerveDef.rrModule.setState(states[3]);
     }
 
+    public static void drive(double xSpeed, double ySpeed, double rotation) {
+        SwerveModuleState[] states = swerveKinematics.toSwerveModuleStates(new ChassisSpeeds(ySpeed, xSpeed, rotation));
+
+        SwerveDriveKinematics.desaturateWheelSpeeds(states, SwerveDef.MAX_SPEED_MPS);
+
+        SwerveDef.flModule.setState(states[0]);
+        SwerveDef.frModule.setState(states[1]);
+        SwerveDef.rlModule.setState(states[2]);
+        SwerveDef.rrModule.setState(states[3]);
+    }
+
     public static void orientedDrive() {
         xSpeed = deadzone(-controller.getLeftX()) * SwerveDef.MAX_SPEED_MPS * SwerveDef.DRIVE_COEFFICIENT
                 * addDriveCoeff; // revert if needed
@@ -172,5 +184,9 @@ public class SwerveDrive {
 
     static void resetOdometry() {
         odometry.resetPosition(new Pose2d(), SwerveDef.gyro.getRotation2d());
+    }
+
+    static void setOdometry(Pose2d pose, Rotation2d rot) {
+        odometry.resetPosition(pose, rot);
     }
 }
