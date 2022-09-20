@@ -1,10 +1,8 @@
 package frc.robot;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
-
-import org.xml.sax.SAXParseException;
-
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
@@ -165,5 +163,14 @@ public class SwerveDrive {
 
     static void gyroReset() {
         SwerveDef.gyro.reset();
+    }
+
+    static void updateOdometry() {
+        odometry.update(SwerveDef.gyro.getRotation2d(), SwerveDef.flModule.getState(), SwerveDef.frModule.getState(),
+                SwerveDef.rlModule.getState(), SwerveDef.rrModule.getState());
+    }
+
+    static void resetOdometry() {
+        odometry.resetPosition(new Pose2d(), SwerveDef.gyro.getRotation2d());
     }
 }
