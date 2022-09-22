@@ -42,11 +42,13 @@ public class Robot extends TimedRobot {
     // SWERVE.init();
 
     Tests.init();
+    Sensors.init();
   }
 
   @Override
   public void robotPeriodic() {
     Tests.periodic();
+    Sensors.periodic();
   }
 
   @Override

@@ -3,8 +3,13 @@ package frc.robot;
 import com.ctre.phoenix.motorcontrol.InvertType;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
+import com.fasterxml.jackson.databind.ser.std.StdArraySerializers.FloatArraySerializer;
 
+import org.ejml.dense.row.mult.SubmatrixOps_FDRM;
+
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Turret {
@@ -25,6 +30,22 @@ public class Turret {
     static Timer safeTurretMove;
 
     static Timer feedSleep;
+
+    // auto stuff
+    static enum TurretTurnMode {
+        MANUAL,
+        LIMELIGHT,
+        ENCODER;
+    }
+
+    static PIDController turretLLController = new PIDController(0.2, 0, 0);
+    static PIDController turretController = new PIDController(0.2, 0, 0);
+    static double autoTurretSpeed = 0;
+    static final double MAX_TURRET_TICKS_RIGHT = 200;
+    static final double MAX_TURRET_TICKS_LEFT = -1500; // TODO change values
+    static boolean turretLLOnTarget = false;
+    static boolean turretOnTarget = false;
+    static TurretTurnMode turnMode = TurretTurnMode.MANUAL;
 
     public static void init() {
         feedSleep = new Timer();
@@ -77,9 +98,44 @@ public class Turret {
         SystemDef.feeder.configAllowableClosedloopError(0, 0, 20);
         SystemDef.feeder.configNeutralDeadband(0.05, 20);
         SystemDef.feeder.setNeutralMode(NeutralMode.Coast);
+
+        turretLLController.setTolerance(0.2); // TODO change to sth more precise
+        turretController.setTolerance(10);
+        Shuffleboard.getTab("SmartDashboard").add("shooterSpeed", 0.9);
     }
 
     public static void periodic() {
+
+        if (SystemDef.getPressed(SystemDef.logitechTen)) {
+            turnMode = TurretTurnMode.LIMELIGHT;
+        } else if (SystemDef.getPressed(SystemDef.logitechEleven)) {
+            turnMode = TurretTurnMode.ENCODER;
+        } else if ((SystemDef.getPressed(SystemDef.logitechTen) || SystemDef.getPressed(SystemDef.logitechEleven))
+                && !turnMode.equals(TurretTurnMode.MANUAL)) {
+            turnMode = TurretTurnMode.MANUAL;
+        } // hope this works
+
+        switch (turnMode) {
+            case MANUAL:
+                if (SystemDef.logitechFour.get() && !turretLeft) {
+                    rotate(-1);
+                    // turretProtection(-1);
+                } else if (SystemDef.logitechFive.get() && !turretRight) {
+                    rotate(1);
+                    // turretProtection(1);
+                } else {
+                    rotate(0); // kind of useless
+                }
+                break;
+
+            case LIMELIGHT:
+                limeLightTurn();
+                break;
+
+            case ENCODER:
+                homeTurret();
+                break;
+        }
 
         // shooting+reverse+feeder
         if (SystemDef.logitechTrigger.get()) {
@@ -102,31 +158,21 @@ public class Turret {
             }
         }
 
-        // rotating
-        if (SystemDef.logitechFour.get()) {
-            rotate(-1);
-            turretProtection(-1);
-        } else if (SystemDef.logitechFive.get()) {
-            rotate(1);
-            turretProtection(1);
-        } else {
-            rotate(0.31);
-        }
-
         // hood
         if (SystemDef.logitechThree.get()) {
             hoodAdjust(-1);
-            hoodProtection(-1);
+            // hoodProtection(-1);
         } else if (SystemDef.logitechTwo.get()) {
             hoodAdjust(1);
-            hoodProtection(1);
+            // hoodProtection(1);
         } else {
             hoodAdjust(0);
         }
 
         clampFeedSleep();
-        resetHoodProtection();
-        resetTurretProtection(); // if works, implement into logical tree (if left, cant go left etc.)
+        // resetHoodProtection();
+        // resetTurretProtection(); // if works, implement into logical tree (if left,
+        // cant go left etc.)
 
         report();
 
@@ -160,6 +206,11 @@ public class Turret {
         // SmartDashboard.putNumber("shooterSpeed", shooterSpeed);
         shooterSpeed = SmartDashboard.getNumber("shooterSpeed", 0.9);
         SmartDashboard.putNumber("feeder Delay", feedSleepTimer);
+
+        SmartDashboard.putNumber("autoTurretSpeed", autoTurretSpeed);
+        SmartDashboard.putBoolean("turretllOnTarget", turretLLOnTarget);
+        SmartDashboard.putBoolean("turretOnTarget", turretOnTarget);
+        SmartDashboard.putString("turretMode", turnMode.toString());
     }
 
     // experimental
@@ -228,5 +279,57 @@ public class Turret {
 
     static void clampFeedSleep() {
         feedSleepTimer = -SystemDef.logitech.getZ() + 2;
+    }
+
+    static void limeLightTurn() {
+        autoTurretSpeed = turretLLController.calculate(Sensors.x, 0);
+        turretLLOnTarget = turretLLController.atSetpoint();
+
+        if ((autoTurretSpeed < 0 && turretLeft) || (autoTurretSpeed > 0 && turretRight)) { // might need to reverse
+                                                                                           // dirctions
+            SystemDef.turretMover.set(0);
+        } else {
+            SystemDef.turretMover.set(autoTurretSpeed);
+        }
+    }
+
+    static void hardTurretStop() {
+        if (Sensors.turretTicks >= MAX_TURRET_TICKS_RIGHT) {
+            turretRight = true;
+            turretLeft = false;
+        } else if (Sensors.turretTicks <= MAX_TURRET_TICKS_LEFT) {
+            turretLeft = true;
+            turretRight = false;
+        } else {
+            turretLeft = false;
+            turretRight = false;
+        }
+    }
+
+    static void changeTurretMode() {
+        switch (turnMode) {
+            case MANUAL:
+                Sensors.pipeline.setNumber(1); // processing cam
+                break;
+            case LIMELIGHT:
+                Sensors.pipeline.setNumber(0); // driving cam
+                break;
+            case ENCODER:
+                Sensors.pipeline.setNumber(0);
+            default:
+                turnMode = TurretTurnMode.MANUAL;
+                break;
+        }
+    }
+
+    static void homeTurret() {
+        autoTurretSpeed = turretController.calculate(Sensors.turretTicks, 0);
+        turretOnTarget = turretController.atSetpoint();
+        if ((autoTurretSpeed < 0 && turretLeft) || (autoTurretSpeed > 0 && turretRight)) { // might need to reverse
+                                                                                           // dirctions
+            SystemDef.turretMover.set(0);
+        } else {
+            SystemDef.turretMover.set(autoTurretSpeed);
+        }
     }
 }
