@@ -6,11 +6,15 @@ Some TODOs:
 
 -add comments
 
--test if it works
-
 -debug and add more rliable structures
 
--add field-oriented driving
+-test autonomous driving
+
+-add functions to paths to actually do somtehing while driving
+
+-add encoder to turret
+
+-make turret safe to operate
 
 .
 
