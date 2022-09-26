@@ -21,7 +21,7 @@ import java.math.*;
 public class Autonomous {
 
     static double elapsedTime;
-    static PathPlannerTrajectory trajOne = PathPlanner.loadPath("New Path", 3, 2.5);
+    static PathPlannerTrajectory trajOne;// = PathPlanner.loadPath("New Path", 3, 2.5);
     static double kP = 3;
     static double startTime = 0;
     static String status = "";

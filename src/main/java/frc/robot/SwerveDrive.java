@@ -10,6 +10,7 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class SwerveDrive {
 
@@ -56,13 +57,14 @@ public class SwerveDrive {
     }
 
     public static void initRobotOriented() {
+
         fieldRelative = false;
     }
 
     public static void periodic() {
-        if (controller.getLeftBumperPressed()) {
+        if (controller.getStartButton() && !fieldRelative) {
             initFieldOriented();
-        } else if (controller.getRightBumperPressed()) {
+        } else if (controller.getStartButton()) {
             initRobotOriented();
         }
 
@@ -75,6 +77,8 @@ public class SwerveDrive {
         if (controller.getBackButtonPressed()) {
             gyroReset();
         }
+
+        SmartDashboard.putBoolean("fieldRelative", fieldRelative);
 
         // resetZero();
     }

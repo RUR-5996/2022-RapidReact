@@ -11,6 +11,8 @@ import edu.wpi.first.wpilibj2.command.button.Button; //check if imports are work
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 public class SystemDef {
 
@@ -25,7 +27,7 @@ public class SystemDef {
      * right bumper: field oriented drive
      * a-button: set wheel position
      * y-button: intake in/out
-     * b-button: switch LLmode
+     * b-button: switch LLmode (driving/processing)
      * back button: reset gyro
      * 
      * logitech:
@@ -37,13 +39,16 @@ public class SystemDef {
      * six: intake in/out?
      * seven: reverse shooter
      * eight: reset turret encoder
-     * nine:
-     * ten: set turret to LL mode or set back to manual
-     * eleven: home turret or set back to manual
-     * z-axis: positive-fast, negative-slow
+     * nine: set turret to manual mode
+     * ten: set turret to LL mode
+     * eleven: home turret
+     * z-axis: defines the value of FeedSleep (-1 -> 1.5s, 1 -> 3s)
      */
 
+    // Single instance of XboxController
     public static XboxController controller = new XboxController(0);
+
+    // Logitech Attack 3 controller definition
     public static Joystick logitech = new Joystick(1);
 
     public static Button logitechTrigger = new JoystickButton(logitech, 1);
@@ -58,14 +63,25 @@ public class SystemDef {
     public static final Button logitechTen = new JoystickButton(logitech, 10);
     public static final Button logitechEleven = new JoystickButton(logitech, 11);
 
-    static Timer buttonTimer = new Timer();
+    static Timer buttonTimer = new Timer(); // timer for identifying singule button presses
 
+    /**
+     * Initializing function for SystemDef
+     * Holds timer init for further functions
+     * Should be placed in robotInit()
+     */
     public static void init() {
         buttonTimer.reset();
         buttonTimer.start();
     }
 
-    public static boolean getPressed(Button button) {
+    /**
+     * Alternative to XboxController's getPressed() for regular buttons
+     * 
+     * @param button Joystick buton on generic controller
+     * @return boolean value determinig if the button has been pressed
+     */
+    public static boolean getPressed(Button button) { // TODO fix this
         if (button.get() && buttonTimer.get() >= 0.2) {
             buttonTimer.reset();
             return true;
@@ -74,11 +90,13 @@ public class SystemDef {
         }
     }
 
-    public static WPI_TalonFX shooter = new WPI_TalonFX(9);//
-    public static WPI_TalonFX intake = new WPI_TalonFX(10);
-    public static WPI_VictorSPX turretMover = new WPI_VictorSPX(11);//
-    public static WPI_VictorSPX feeder = new WPI_VictorSPX(12);
-    public static WPI_TalonSRX hoodMotor = new WPI_TalonSRX(13);//
+    public static WPI_TalonFX shooter = new WPI_TalonFX(9); // Falcon motor with 1:1 ratio on shooter flywheel
+    // public static WPI_TalonFX intake = new WPI_TalonFX(10); //probably deprecated
+    // forever
+    public static WPI_VictorSPX turretMover = new WPI_VictorSPX(11);// Redline motor with 64:1 sport gearbox
+    public static WPI_VictorSPX feeder = new WPI_VictorSPX(12); // redline motor with 4:1 sport gearbox
+    public static WPI_VictorSPX hoodMotor = new WPI_VictorSPX(13); // Redline motor with 64:1 sport gearbox
+    public static CANSparkMax intakeSpark = new CANSparkMax(10, MotorType.kBrushless); // NEO motor spinning the intake
 
     // Pneumatics - later
     /*
